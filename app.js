@@ -12,6 +12,78 @@ const render = require("./lib/htmlRenderer");
 
 
 // Write code to use inquirer to gather information about the development team members,
+function addEmployee() {
+    inquirer
+        .prompt({
+            type: `list`,
+            message: `Ready to build your team?`,
+            choices: [`yes`, `no`],
+            name: `initialize`
+        }).then((answer) => {
+           
+            if (JSON.stringify(answer) == `{"initialize":"yes"}` ) {
+                inquirer
+                    .prompt({
+                        type: `list`,
+                        message: `What type of Employee are you adding?`,
+                        choices: [`Manager`, `Engineer`, `Intern`],
+                        name: `employeeType`
+                    }).then((employeeType) => {
+                        switch (JSON.stringify(employeeType)) {
+                            case `{"employeeType":"Manager"}`:
+                                manager()
+                                break
+                            case `{"employeeType":"engineer"}`:
+                                engineer()
+                                break
+                            case `{"employeeType":"intern"}`:
+                                intern()
+                                break
+                            
+
+                        
+                        }
+
+                        
+                    })
+            } else { console.log(`Okay then, have a nice day!`) }
+        })
+}
+
+function anotherEmployee() {
+    inquirer
+        .prompt({
+            type: `list`,
+            message: `Do you have another Employee to add?`,
+            choices: [`yes`, `no`],
+            name: `initialize`
+        }).then((answer) => {
+            if (JSON.stringify(answer) == `{"initialize":"yes"}`) {
+                inquirer
+                    .prompt({
+                        type: `list`,
+                        message: `What type of Employee are you adding?`,
+                        choices: [`Manager`, `Engineer`, `Intern`],
+                        name: `employeeType`
+                    }).then((employeeType) => {
+                        switch (employeeType) {
+                            case `Manager`:
+                                manager()
+                                break
+                            case `Engineer`:
+                                engineer()
+                                break
+                            case `Intern`:
+                                intern()
+                                break
+                        }
+
+                        
+                    })
+            } else { render }
+        })
+}
+
 function manager() {
     console.log(`Let's input your Manager!`)
     inquirer
@@ -36,8 +108,9 @@ function manager() {
                 message: `What is your Manager's office number?`,
                 name: `managerNumber`
             }
-    ]).then((answers) => {
+        ]).then((answers) => {
             const currentManager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerNumber)
+            anotherEmployee()
         })
 }
 
@@ -65,41 +138,43 @@ function engineer() {
                 message: `What is your Engineer's Github Username?`,
                 name: `engineerGithub`
             }
-    ]).then((answers) => {
+        ]).then((answers) => {
             const currentEngineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub)
+            anotherEmployee()
         })
 }
 
-function engineer() {
-    console.log(`Let's input your Engineer!`)
+function intern() {
+    console.log(`Let's input your Intern!`)
     inquirer
         .prompt([
             {
                 type: "input",
-                message: `What is your Engineer's name`,
-                name: `engineerName`
+                message: `What is your Intern's name`,
+                name: `internName`
             },
             {
                 type: "input",
-                message: `What is your Engineer's ID number?`,
-                name: `EngineerId`
+                message: `What is your Intern's ID number?`,
+                name: `internId`
             },
             {
                 type: "input",
-                message: `What is your Engineer's email?`,
-                name: `EngineerEmail`
+                message: `What is your Intern's email?`,
+                name: `internEmail`
             },
             {
                 type: "input",
-                message: `What is your Engineer's Github Username?`,
-                name: `engineerGithub`
+                message: `Where does your Intern attend school?`,
+                name: `internSchool`
             }
-    ]).then((answers) => {
-            const currentEngineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub)
+        ]).then((answers) => {
+            const currentintern = new intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool)
+            anotherEmployee()
         })
 }
 
-
+addEmployee()
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // After the user has input all employees desired, call the `render` function (required
