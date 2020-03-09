@@ -10,6 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const employees = []
 
 // Write code to use inquirer to gather information about the development team members,
 function addEmployee() {
@@ -20,8 +21,8 @@ function addEmployee() {
             choices: [`yes`, `no`],
             name: `initialize`
         }).then((answer) => {
-           
-            if (JSON.stringify(answer) == `{"initialize":"yes"}` ) {
+
+            if (JSON.stringify(answer) == `{"initialize":"yes"}`) {
                 inquirer
                     .prompt({
                         type: `list`,
@@ -33,18 +34,18 @@ function addEmployee() {
                             case `{"employeeType":"Manager"}`:
                                 manager()
                                 break
-                            case `{"employeeType":"engineer"}`:
+                            case `{"employeeType":"Engineer"}`:
                                 engineer()
                                 break
-                            case `{"employeeType":"intern"}`:
+                            case `{"employeeType":"Intern"}`:
                                 intern()
                                 break
-                            
 
-                        
+
+
                         }
 
-                        
+
                     })
             } else { console.log(`Okay then, have a nice day!`) }
         })
@@ -66,21 +67,24 @@ function anotherEmployee() {
                         choices: [`Manager`, `Engineer`, `Intern`],
                         name: `employeeType`
                     }).then((employeeType) => {
-                        switch (employeeType) {
-                            case `Manager`:
+                        switch (JSON.stringify(employeeType)) {
+                            case `{"employeeType":"Manager"}`:
                                 manager()
                                 break
-                            case `Engineer`:
+                            case `{"employeeType":"Engineer"}`:
                                 engineer()
                                 break
-                            case `Intern`:
+                            case `{"employeeType":"Intern"}`:
                                 intern()
                                 break
+
+
+
                         }
 
-                        
+
                     })
-            } else { render }
+            } else { render(employees) }
         })
 }
 
@@ -110,6 +114,7 @@ function manager() {
             }
         ]).then((answers) => {
             const currentManager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerNumber)
+            employees.push(currentManager)
             anotherEmployee()
         })
 }
@@ -126,12 +131,12 @@ function engineer() {
             {
                 type: "input",
                 message: `What is your Engineer's ID number?`,
-                name: `EngineerId`
+                name: `engineerId`
             },
             {
                 type: "input",
                 message: `What is your Engineer's email?`,
-                name: `EngineerEmail`
+                name: `engineerEmail`
             },
             {
                 type: "input",
@@ -140,6 +145,8 @@ function engineer() {
             }
         ]).then((answers) => {
             const currentEngineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub)
+
+            employees.push(currentEngineer)
             anotherEmployee()
         })
 }
@@ -169,7 +176,10 @@ function intern() {
                 name: `internSchool`
             }
         ]).then((answers) => {
-            const currentintern = new intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool)
+            const currentIntern = new intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool)
+
+            employees.push(currentIntern)
+            
             anotherEmployee()
         })
 }
