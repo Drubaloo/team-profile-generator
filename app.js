@@ -40,9 +40,8 @@ function addEmployee() {
                             case `{"employeeType":"Intern"}`:
                                 intern()
                                 break
-
-
-
+                            default:
+                                break
                         }
 
 
@@ -77,9 +76,8 @@ function anotherEmployee() {
                             case `{"employeeType":"Intern"}`:
                                 intern()
                                 break
-
-
-
+                            default:
+                                break
                         }
 
 
@@ -113,7 +111,7 @@ function manager() {
                 name: `managerNumber`
             }
         ]).then((answers) => {
-            const currentManager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerNumber)
+            const currentManager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerNumber, `Manager`)
             employees.push(currentManager)
             anotherEmployee()
         })
@@ -144,7 +142,7 @@ function engineer() {
                 name: `engineerGithub`
             }
         ]).then((answers) => {
-            const currentEngineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub)
+            const currentEngineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub, `Engineer`)
 
             employees.push(currentEngineer)
             anotherEmployee()
@@ -157,7 +155,7 @@ function intern() {
         .prompt([
             {
                 type: "input",
-                message: `What is your Intern's name`,
+                message: `What is your Intern's name?`,
                 name: `internName`
             },
             {
@@ -176,7 +174,7 @@ function intern() {
                 name: `internSchool`
             }
         ]).then((answers) => {
-            const currentIntern = new intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool)
+            const currentIntern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool, `Intern`)
 
             employees.push(currentIntern)
             
